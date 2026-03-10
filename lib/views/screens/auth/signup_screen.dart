@@ -1,21 +1,12 @@
-import 'package:feb25prac/views/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatelessWidget {
+  const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.cyanAccent,
-        title: Text(
-          "Welcome to the Login page",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-      ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -26,7 +17,7 @@ class LoginScreen extends StatelessWidget {
 
               children: [
                 Text(
-                  "Winx",
+                  "Sign up",
                   style: TextStyle(
                     color: const Color.fromARGB(255, 70, 16, 164),
                     fontSize: 37,
@@ -76,7 +67,6 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: TextField(
@@ -94,22 +84,7 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () {},
                   color: Colors.white,
                   textColor: Colors.deepOrangeAccent,
-                  child: Text("Login"),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MaterialButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignupScreen()),
-                      );
-                    },
-                    color: Colors.deepOrange,
-                    textColor: Colors.black,
-                    child: Text("Don't have an account? Sign up"),
-                  ),
+                  child: Text("Sign up"),
                 ),
               ],
             ),
