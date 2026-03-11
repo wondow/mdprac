@@ -1,6 +1,8 @@
 import 'package:feb25prac/configs/colors.dart';
 import 'package:feb25prac/views/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
+// ignore: unused_import
+import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -8,7 +10,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.cyanAccent,
         title: Text(
@@ -97,6 +99,20 @@ class LoginScreen extends StatelessWidget {
                   textColor: Colors.deepOrangeAccent,
                   child: Text("Login"),
                 ),
+                GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Container(
+                      height: 50,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                ),
 
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -107,9 +123,6 @@ class LoginScreen extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => SignupScreen()),
                       );
                     },
-                    color: Colors.deepOrange,
-                    textColor: Colors.black,
-                    child: Text("Don't have an account? Sign up"),
                   ),
                 ),
               ],

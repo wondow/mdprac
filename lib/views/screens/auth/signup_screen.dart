@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -85,6 +87,27 @@ class SignupScreen extends StatelessWidget {
                   color: Colors.white,
                   textColor: Colors.deepOrangeAccent,
                   child: Text("Sign up"),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Already have an account? ",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      GestureDetector(
+                        child: Text(
+                          "Login",
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        onTap: () {
+                          Get.offAndToNamed("/Login");
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
