@@ -7,7 +7,6 @@ void main() {
       debugShowCheckedModeBanner: false,
       home: LoginScreen(),
       debugShowMaterialGrid: false,
-      
     ),
   );
 }
