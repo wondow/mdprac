@@ -1,3 +1,4 @@
+import 'package:feb25prac/configs/colors.dart';
 import 'package:feb25prac/views/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: primaryColor,
       appBar: AppBar(
         backgroundColor: Colors.cyanAccent,
         title: Text(
