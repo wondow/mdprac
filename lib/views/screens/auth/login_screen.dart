@@ -12,7 +12,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.cyanAccent,
+        backgroundColor: Color(0xFFAF6384),
         title: Text(
           "Welcome to the Login page",
           style: TextStyle(color: Colors.black),
@@ -81,7 +81,7 @@ class LoginScreen extends StatelessWidget {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: "Email or phone number",
@@ -93,29 +93,22 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 30),
-                MaterialButton(
-                  onPressed: () {},
-                  color: Colors.white,
-                  textColor: Colors.deepOrangeAccent,
-                  child: Text("Login"),
-                ),
                 GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                  child: MaterialButton(
+                    onPressed: () {},
+                    color: Colors.white,
+                    textColor: Colors.deepOrange,
+                    child: Text("Login"),
                   ),
+                  onTap: () {
+                    Get.offAndToNamed(
+                      "/lib/views/screens/auth/home_screen.dart",
+                    );
+                  },
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: MaterialButton(
                     onPressed: () {
                       Navigator.push(
@@ -123,6 +116,37 @@ class LoginScreen extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => SignupScreen()),
                       );
                     },
+
+                    color: Colors.deepOrange,
+                    textColor: Colors.black,
+
+                    child: GestureDetector(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+
+                        child: Container(
+                          height: 20,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            children: [
+                              Spacer(),
+                              Text(
+                                "Don't have an account? ",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              Text(
+                                "Sign up",
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],

@@ -89,6 +89,7 @@ class SignupScreen extends StatelessWidget {
                   child: Text("Sign up"),
                 ),
 
+                SizedBox(height: 30,),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Row(
