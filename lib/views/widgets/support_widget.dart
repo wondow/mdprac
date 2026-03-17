@@ -18,11 +18,11 @@ class AppWidget {
     );
   }
 
-  static TextStyle semiboldTextFeildStyle(){
+  static TextStyle semiboldTextFeildStyle() {
     return TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  );
+      color: Colors.black,
+      fontSize: 20.0,
+      fontWeight: FontWeight.bold,
+    );
   }
 }
