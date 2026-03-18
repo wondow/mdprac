@@ -72,12 +72,14 @@ class SignupScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: TextField(
+                    obscureText: true,
                     decoration: InputDecoration(
-                      hintText: "Email or phone number",
+                      hintText: "Pin or Password",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                       prefixIcon: Icon(Icons.lock),
+                      suffixIcon: Icon(Icons.visibility_off),
                     ),
                   ),
                 ),
@@ -89,7 +91,7 @@ class SignupScreen extends StatelessWidget {
                   child: Text("Sign up"),
                 ),
 
-                SizedBox(height: 30,),
+                SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Row(

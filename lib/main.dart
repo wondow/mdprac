@@ -1,5 +1,7 @@
 import 'package:feb25prac/configs/routes.dart';
+// ignore: unused_import
 import 'package:feb25prac/views/screens/auth/dashboard.dart';
+import 'package:feb25prac/views/screens/auth/login_screen.dart';
 // ignore: unused_import
 import 'package:feb25prac/views/screens/auth/orders.dart';
 // ignore: unused_import
@@ -13,7 +15,7 @@ void main() {
       initialRoute: "/",
       getPages: routes,
       debugShowCheckedModeBanner: false,
-      home: Dashboard(),
+      home: LoginScreen(),
 
       debugShowMaterialGrid: false,
     ),

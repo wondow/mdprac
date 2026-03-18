@@ -5,6 +5,7 @@ import 'package:feb25prac/configs/colors.dart';
 import 'package:feb25prac/views/screens/auth/home_screen.dart';
 import 'package:feb25prac/views/screens/auth/orders.dart';
 import 'package:feb25prac/views/screens/auth/proflie.dart';
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -20,7 +21,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    _pages = [const HomeScreen(), const Orders(), const ProfilePage(),];
+    _pages = [const HomeScreen(), const Orders(), const ProfilePage()];
   }
 
   @override
@@ -38,7 +39,7 @@ class _DashboardState extends State<Dashboard> {
         animationDuration: const Duration(milliseconds: 300),
         items: const [
           Icon(Icons.home, size: 30, color: Colors.black),
-          Icon(Icons.favorite, size: 30, color: Colors.black),
+          Icon(Icons.list, size: 30, color: Colors.black),
           Icon(Icons.person, size: 30, color: Colors.black),
         ],
         onTap: (index) {

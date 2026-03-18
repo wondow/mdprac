@@ -1,8 +1,14 @@
 import 'package:feb25prac/configs/colors.dart';
+import 'package:feb25prac/controllers/logincontroller.dart';
 import 'package:feb25prac/views/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:get/get.dart';
+
+LoginController loginController = Get.put(LoginController());
+
+TextEditingController usernameController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -55,7 +61,9 @@ class LoginScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: TextField(
+                    controller: usernameController,
                     decoration: InputDecoration(
+                      hintText: "Email or Phone number",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -82,29 +90,52 @@ class LoginScreen extends StatelessWidget {
 
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Email or phone number",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
+                  child: Obx(
+                    () => TextField(
+                      controller: passwordController,
+                      obscureText: !loginController.passwordVisible.value,
+                      decoration: InputDecoration(
+                        hintText: "Pin or Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: GestureDetector(
+                          child: Icon(
+                            loginController.passwordVisible.value
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
                       ),
-                      prefixIcon: Icon(Icons.lock),
+                      onTap: () {
+                        loginController.togglePassword();
+                      },
                     ),
                   ),
                 ),
+
                 SizedBox(height: 30),
                 GestureDetector(
                   child: MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      bool succes = loginController.login(
+                        usernameController.text,
+                        passwordController.text,
+                      );
+                      if (succes) {
+                        Get.offAndToNamed("/homescreen");
+                      } else {
+                        Get.snackbar(
+                          "Login failed",
+                          "Please check you credentials",
+                        );
+                      }
+                    },
                     color: Colors.white,
                     textColor: Colors.deepOrange,
                     child: Text("Login"),
                   ),
-                  onTap: () {
-                    Get.offAndToNamed(
-                      "/lib/views/screens/auth/home_screen.dart",
-                    );
-                  },
                 ),
 
                 Padding(
