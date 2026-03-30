@@ -1,23 +1,20 @@
-import 'package:feb25prac/configs/routes.dart';
-// ignore: unused_import
-import 'package:feb25prac/views/screens/auth/dashboard.dart';
-import 'package:feb25prac/views/screens/auth/login_screen.dart';
-// ignore: unused_import
-import 'package:feb25prac/views/screens/auth/orders.dart';
-// ignore: unused_import
-import 'package:feb25prac/views/screens/auth/proflie.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:feb25prac/configs/routes.dart';
+import 'package:feb25prac/configs/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init(); // Initialize local storage
+
   runApp(
     GetMaterialApp(
+      title: 'Digital Sanctuary',
       initialRoute: "/",
       getPages: routes,
+      theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
-
-      debugShowMaterialGrid: false,
     ),
   );
 }
