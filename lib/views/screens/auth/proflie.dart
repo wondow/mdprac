@@ -45,34 +45,7 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   backgroundColor: colorOnPrimary,
-      //   fixedColor: Color(0xFFB99099),
-      //   currentIndex: 2,
-      //   onTap: (index) {
-      //     switch (index) {
-      //       case 0:
-      //         Navigator.pushReplacement(
-      //           context,
-      //           MaterialPageRoute(builder: (context) => const HomeScreen()),
-      //         );
-      //         break;
-      //       case 1:
-      //         Navigator.pushReplacement(
-      //           context,
-      //           MaterialPageRoute(builder: (context) => const Orders()),
-      //         );
-      //         break;
-      //       case 2:
-      //         break;
-      //     }
-      //   },
-      //   items: const [
-      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-      //     BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Orders"),
-      //     BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-      //   ],
-      // ),
+      
     );
   }
 

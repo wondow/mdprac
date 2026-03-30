@@ -18,8 +18,6 @@ class Orders extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/images/rasp_lemon.png", height: 100),
-            SizedBox(height: 20),
             Text(
               "Your Ordered Products",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -29,34 +27,7 @@ class Orders extends StatelessWidget {
           ],
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   backgroundColor: Color(0xFFB99099),
-      //   currentIndex: 1,
-      //   onTap: (index) {
-      //     switch (index) {
-      //       case 0:
-      //         Navigator.pushReplacement(
-      //           context,
-      //           MaterialPageRoute(builder: (context) => const HomeScreen()),
-      //         );
-      //         break;
-      //       case 1:
-      //         // Already on Orders
-      //         break;
-      //       case 2:
-      //         Navigator.pushReplacement(
-      //           context,
-      //           MaterialPageRoute(builder: (context) => const ProfilePage()),
-      //         );
-      //         break;
-      //     }
-      //   },
-      //   items: const [
-      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-      //     BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Orders"),
-      //     BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-      //   ],
-      // ),
+      
     );
   }
 

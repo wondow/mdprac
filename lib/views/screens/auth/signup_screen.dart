@@ -1,6 +1,7 @@
+import 'package:feb25prac/views/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/state_manager.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -60,7 +61,7 @@ class SignupScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Enter password",
+                        "Enter Email",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -72,23 +73,64 @@ class SignupScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: TextField(
-                    obscureText: true,
                     decoration: InputDecoration(
-                      hintText: "Pin or Password",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      prefixIcon: Icon(Icons.lock),
-                      suffixIcon: Icon(Icons.visibility_off),
+                      prefixIcon: Icon(Icons.gradient_rounded),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 0, 20, 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Enter password",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: Obx(
+                    () => TextField(
+                      controller: passwordController,
+                      obscureText: loginController.passwordVisible.value,
+                      decoration: InputDecoration(
+                        hintText: "Pin or Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: GestureDetector(
+                          child: Icon(
+                            loginController.passwordVisible.value
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        loginController.togglePassword();
+                      },
                     ),
                   ),
                 ),
                 SizedBox(height: 30),
-                MaterialButton(
-                  onPressed: () {},
-                  color: Colors.white,
-                  textColor: Colors.deepOrangeAccent,
-                  child: Text("Sign up"),
+                GestureDetector(
+                  child: MaterialButton(
+                    onPressed: () {},
+                    color: Colors.white,
+                    textColor: Colors.deepOrangeAccent,
+                    child: Text("Create an account"),
+                  ),
                 ),
 
                 SizedBox(height: 30),

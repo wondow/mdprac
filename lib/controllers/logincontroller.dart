@@ -9,7 +9,6 @@ class LoginController extends GetxController {
     username.value = user;
     password.value = pass;
     if (username.value == "admin" && password.value == "12345") {
-    
       return true;
     } else {
       return false;

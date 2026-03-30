@@ -4,6 +4,8 @@ import 'package:feb25prac/views/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:get/get.dart';
+// ignore: unused_import
+import 'package:feb25prac/views/screens/auth/dashboard.dart';
 
 LoginController loginController = Get.put(LoginController());
 
@@ -93,7 +95,7 @@ class LoginScreen extends StatelessWidget {
                   child: Obx(
                     () => TextField(
                       controller: passwordController,
-                      obscureText: !loginController.passwordVisible.value,
+                      obscureText: loginController.passwordVisible.value,
                       decoration: InputDecoration(
                         hintText: "Pin or Password",
                         border: OutlineInputBorder(
@@ -124,7 +126,7 @@ class LoginScreen extends StatelessWidget {
                         passwordController.text,
                       );
                       if (succes) {
-                        Get.offAndToNamed("/homescreen");
+                        Get.offAndToNamed("/dashboard");
                       } else {
                         Get.snackbar(
                           "Login failed",
