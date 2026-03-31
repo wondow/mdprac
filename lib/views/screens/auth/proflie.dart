@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:feb25prac/configs/colors.dart';
+import '../../../configs/theme.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -8,55 +7,75 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorBackground,
+      backgroundColor: AppTheme.background,
       appBar: AppBar(
-        title: Text("Profile"),
-        backgroundColor: colorPrimary,
+        title: Text(
+          "Profile",
+          style: Theme.of(context).textTheme.displayMedium,
+        ),
+        backgroundColor: AppTheme.surfaceContainer,
+        elevation: 0,
         automaticallyImplyLeading: false,
-        leading: null,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage("assets/images/ladybug.png"),
+            const Center(
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: AssetImage("assets/images/ladybug.png"),
+              ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               "User Profile",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.displayMedium,
             ),
-            SizedBox(height: 10),
-            _buildUserInfo("Name", "Micheals Amnhalie"),
-            _buildUserInfo("Email", "amnhaliedanielmicheals@gmail.com"),
-            _buildUserInfo("Phone", "+254 234006789"),
-            _buildUserInfo("Address", "Daystar University, Athi River"),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // ignore: avoid_print
-                print("Change Password initiated");
-              },
-              child: Text("Change Password"),
+            const SizedBox(height: 10),
+            _buildUserInfo(context, "Name", "Micheals Amnhalie"),
+            _buildUserInfo(
+              context,
+              "Email",
+              "amnhaliedanielmicheals@gmail.com",
+            ),
+            _buildUserInfo(context, "Phone", "+254 234006789"),
+            _buildUserInfo(
+              context,
+              "Address",
+              "Daystar University, Athi River",
+            ),
+            const SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text(
+                  "Change Password",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
           ],
         ),
       ),
-      
     );
   }
 
-  Widget _buildUserInfo(String label, String value) {
+  Widget _buildUserInfo(BuildContext context, String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
-        SizedBox(height: 5),
-        Text(value),
-        SizedBox(height: 10),
+        Text(label, style: Theme.of(context).textTheme.labelSmall),
+        const SizedBox(height: 5),
+        Text(value, style: Theme.of(context).textTheme.bodyLarge),
+        const SizedBox(height: 15),
       ],
     );
   }

@@ -6,7 +6,7 @@ class ApiService {
   // NOTE: If using an Android Emulator, use 10.0.2.2.
   // If using a physical phone, use your computer's IPv4 address (e.g., 192.168.1.X)
   // If building for Windows Desktop, use 127.0.0.1
-  static const String baseUrl = 'http://10.0.2.2/blush/api/';
+  static const String baseUrl = 'http://192.168.100.4/blush/api/';
 
   ApiService() {
     _dio.options.baseUrl = baseUrl;

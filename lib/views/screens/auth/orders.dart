@@ -1,5 +1,5 @@
-import 'package:feb25prac/configs/colors.dart';
 import 'package:flutter/material.dart';
+import '../../../configs/theme.dart';
 
 class Orders extends StatelessWidget {
   const Orders({super.key});
@@ -7,12 +7,12 @@ class Orders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorBackground,
+      backgroundColor: AppTheme.background,
       appBar: AppBar(
-        title: Text(" Orders"),
-        backgroundColor: colorPrimary,
+        title: Text("Orders", style: Theme.of(context).textTheme.displayMedium),
+        backgroundColor: AppTheme.surfaceContainer,
+        elevation: 0,
         automaticallyImplyLeading: false,
-        leading: null,
       ),
       body: Center(
         child: Column(
@@ -20,18 +20,19 @@ class Orders extends StatelessWidget {
           children: [
             Text(
               "Your Ordered Products",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(fontSize: 24),
             ),
-            SizedBox(height: 20),
-            _buildFavoriteProducts(),
+            const SizedBox(height: 20),
+            _buildFavoriteProducts(context),
           ],
         ),
       ),
-      
     );
   }
 
-  Widget _buildFavoriteProducts() {
+  Widget _buildFavoriteProducts(BuildContext context) {
     final List<Map<String, dynamic>> favoriteProducts = [
       {
         "name": "Jasmine vanilla Body butter",
@@ -55,38 +56,45 @@ class Orders extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: favoriteProducts.length,
         itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              // ignore: avoid_print
-              print("Product tapped: ${favoriteProducts[index]['name']}");
-            },
-            child: Card(
-              elevation: 4,
-              margin: EdgeInsets.all(8),
-              child: SizedBox(
-                width: 150,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset(
+          return Card(
+            elevation: 4,
+            margin: const EdgeInsets.all(8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: SizedBox(
+              width: 150,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(15),
+                    ),
+                    child: Image.asset(
                       favoriteProducts[index]["image"],
                       height: 200,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        favoriteProducts[index]["name"],
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      favoriteProducts[index]["name"],
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(favoriteProducts[index]["price"]),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      favoriteProducts[index]["price"],
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

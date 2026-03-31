@@ -31,6 +31,7 @@ class AuthController extends GetxController {
   }
 
   // Handle Login
+  // Handle Login
   Future<void> login() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       Get.snackbar(
@@ -48,8 +49,9 @@ class AuthController extends GetxController {
         'password': passwordController.text,
       });
 
+      print("PHP Response: ${response.data}"); // <-- ADDED THIS FOR DEBUGGING
+
       if (response.data['success'] == true) {
-        // Save user and token
         currentUser = UserModel.fromJson(
           response.data['user'],
           response.data['token'],
@@ -57,8 +59,6 @@ class AuthController extends GetxController {
         await _storage.write(key: 'token', value: response.data['token']);
 
         Get.offAllNamed('/dashboard');
-
-        // Clear text fields
         emailController.clear();
         passwordController.clear();
       } else {
@@ -69,6 +69,7 @@ class AuthController extends GetxController {
         );
       }
     } catch (e) {
+      print("Dio Error: $e"); // <-- ADDED THIS TO SEE THE EXACT ERROR
       Get.snackbar(
         'Error',
         'Could not connect to server',
@@ -102,13 +103,15 @@ class AuthController extends GetxController {
         'password': passwordController.text,
       });
 
+      print("PHP Response: ${response.data}"); // <-- ADDED THIS FOR DEBUGGING
+
       if (response.data['success'] == true) {
         Get.snackbar(
           'Success',
           'Account created! Please login.',
           backgroundColor: Colors.green[100],
         );
-        Get.offNamed('/login'); // Go back to login screen
+        Get.offNamed('/login');
       } else {
         Get.snackbar(
           'Signup Failed',
@@ -117,6 +120,7 @@ class AuthController extends GetxController {
         );
       }
     } catch (e) {
+      print("Dio Error: $e"); // <-- ADDED THIS TO SEE THE EXACT ERROR
       Get.snackbar(
         'Error',
         'Could not connect to server',

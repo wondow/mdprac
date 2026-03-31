@@ -1,7 +1,7 @@
-import 'package:feb25prac/configs/colors.dart';
-import 'package:feb25prac/views/widgets/support_widget.dart';
-import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:flutter/material.dart';
+import '../../../configs/theme.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorBackground,
+      backgroundColor: AppTheme.background,
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
@@ -33,21 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Hey, Naila", style: AppWidget.boldTextFieldStyle()),
-                      Text(
-                        "Good Morning",
-                        style: AppWidget.lightTextFeildStyle(),
-                      ),
+                      Text("Hey, Naila", style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 28)),
+                      Text("Good Morning", style: Theme.of(context).textTheme.bodyMedium),
                     ],
                   ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      "assets/images/ladybug.png",
-                      height: 60,
-                      width: 60,
-                      fit: BoxFit.contain,
-                    ),
+                    child: Image.asset("assets/images/ladybug.png", height: 60, width: 60, fit: BoxFit.contain),
                   ),
                 ],
               ),
@@ -55,16 +47,15 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: const EdgeInsets.only(left: 20.0),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  color: AppTheme.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                width: MediaQuery.of(context).size.width,
                 child: TextField(
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: "Search Products",
-                    hintStyle: AppWidget.lightTextFeildStyle(),
-                    prefixIcon: const Icon(Icons.search, color: Colors.black),
+                    hintStyle: TextStyle(color: AppTheme.textVariant.withOpacity(0.5)),
+                    prefixIcon: const Icon(LucideIcons.search, color: AppTheme.primary),
                   ),
                 ),
               ),
@@ -72,51 +63,30 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Categories", style: AppWidget.semiboldTextFeildStyle()),
-                  const Text(
-                    "See all",
-                    style: TextStyle(
-                      color: Color(0xFF004a41),
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Text("Discover Essentials", style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20)),
+                  Text("See all", style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppTheme.primary)),
                 ],
               ),
               const SizedBox(height: 20.0),
               Row(
                 children: [
                   Container(
-                    height: 200,
-                    margin: const EdgeInsets.only(right: 20.0),
+                    height: 150,
+                    margin: const EdgeInsets.only(right: 15.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
-                        child: Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              "All",
-                              style: TextStyle(
-                                color: Color(0xFF935661),
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                      child: Container(
+                        width: 80,
+                        color: AppTheme.primary,
+                        child: const Center(
+                          child: Text("All", style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold)),
                         ),
                       ),
                     ),
                   ),
                   Expanded(
                     child: SizedBox(
-                      height: 200,
-                      width: double.infinity,
+                      height: 150,
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
                         itemCount: categories.length,
@@ -130,259 +100,64 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "All Products",
-                    style: AppWidget.semiboldTextFeildStyle(),
-                  ),
-                  const Text(
-                    "See all",
-                    style: TextStyle(
-                      color: Color(0xFF004a41),
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Text("Signature Selection", style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20)),
+                  Text("See all", style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppTheme.primary)),
                 ],
               ),
-              SizedBox(height: 30.0),
+              const SizedBox(height: 20.0),
+              
+              // We will replace this static list with dynamic API data soon!
               SizedBox(
-                height: 300,
+                height: 250,
                 child: ListView(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children: [
-                    Container(
-                      width: 160,
-                      margin: const EdgeInsets.only(right: 20.0),
-
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "assets/images/shimmer_body_oil.png",
-                            height: 190,
-
-                            fit: BoxFit.cover,
-                          ),
-                          Text(
-                            "Shimmer Oil",
-                            style: AppWidget.semiboldTextFeildStyle(),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "ksh 1200",
-                                style: TextStyle(
-                                  color: Color(0xFF004a41),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 160,
-                      margin: const EdgeInsets.only(right: 20.0),
-
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "assets/images/pineapple_mango.png",
-                            height: 160,
-                            width: 160,
-                            fit: BoxFit.cover,
-                          ),
-                          Text(
-                            "Pineapple mango Body butter",
-                            style: AppWidget.semiboldTextFeildStyle(),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "ksh 1255",
-                                style: TextStyle(
-                                  color: Color(0xFF004a41),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 160,
-                      margin: const EdgeInsets.only(right: 20.0),
-
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "assets/images/blue_nila.png",
-                            height: 190,
-
-                            fit: BoxFit.cover,
-                          ),
-                          Text(
-                            "Blue nila Body Scrub",
-                            style: AppWidget.semiboldTextFeildStyle(),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "ksh 1200",
-                                style: TextStyle(
-                                  color: Color(0xFF004a41),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 160,
-                      margin: const EdgeInsets.only(right: 20.0),
-
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "assets/images/bodybutter.png",
-                            height: 190,
-
-                            fit: BoxFit.cover,
-                          ),
-                          Text(
-                            "French Vanilla Body Butter",
-                            style: AppWidget.semiboldTextFeildStyle(),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "ksh 2000",
-                                style: TextStyle(
-                                  color: Color(0xFF004a41),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 160,
-                      margin: const EdgeInsets.only(right: 20.0),
-
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "assets/images/jasmine_vanilla.png",
-                            height: 190,
-
-                            fit: BoxFit.cover,
-                          ),
-                          Text(
-                            "Jasmine vanilla Body butter",
-                            style: AppWidget.semiboldTextFeildStyle(),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "ksh 1,900",
-                                style: TextStyle(
-                                  color: Color(0xFF004a41),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 160,
-                      margin: const EdgeInsets.only(right: 20.0),
-
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "assets/images/mixed_order.png",
-                            height: 190,
-
-                            fit: BoxFit.cover,
-                          ),
-                          Text(
-                            "Combined Pack",
-                            style: AppWidget.semiboldTextFeildStyle(),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "ksh 4,000",
-                                style: TextStyle(
-                                  color: Color(0xFF004a41),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                    _buildProductCard(context, "assets/images/shimmer_body_oil.png", "Shimmer Oil", "Ksh 1,200"),
+                    _buildProductCard(context, "assets/images/pineapple_mango.png", "Pineapple Mango", "Ksh 1,255"),
+                    _buildProductCard(context, "assets/images/blue_nila.png", "Blue Nila Scrub", "Ksh 1,200"),
                   ],
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildProductCard(BuildContext context, String imagePath, String title, String price) {
+    return Container(
+      width: 160,
+      margin: const EdgeInsets.only(right: 20.0),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [BoxShadow(color: AppTheme.textMain.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            child: Image.asset(imagePath, height: 150, width: double.infinity, fit: BoxFit.cover),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: Theme.of(context).textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis),
+                const SizedBox(height: 5),
+                Text(price, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppTheme.primary)),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -395,7 +170,7 @@ class CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(right: 20.0),
+      margin: const EdgeInsets.only(right: 15.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: BackdropFilter(
@@ -407,12 +182,7 @@ class CategoryTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
               border: Border.all(color: Colors.white60, width: 1.5),
             ),
-            child: Image.asset(
-              image,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 150,
-            ),
+            child: Image.asset(image, fit: BoxFit.cover, width: double.infinity, height: 150),
           ),
         ),
       ),

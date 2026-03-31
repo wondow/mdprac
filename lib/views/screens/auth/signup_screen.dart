@@ -1,164 +1,160 @@
-import 'package:feb25prac/views/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
+import '../../../controllers/auth_controller.dart';
+import '../../../configs/theme.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // We use Get.find() because the controller was already created on the Login screen!
+    final authController = Get.find<AuthController>();
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+      backgroundColor: AppTheme.background,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Header
                 Text(
-                  "Sign up",
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 70, 16, 164),
-                    fontSize: 37,
-                    fontWeight: FontWeight.bold,
+                  "Join Us.",
+                  style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 42),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "Create your sanctuary account.",
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppTheme.textVariant,
+                    letterSpacing: 0.5,
                   ),
                 ),
-                Image.asset('assets/images/winx.png', height: 200, width: 200),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 0, 20, 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Enter Username",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      prefixIcon: Icon(Icons.gradient_rounded),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 0, 20, 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Enter Email",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      prefixIcon: Icon(Icons.gradient_rounded),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 0, 20, 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Enter password",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Obx(
-                    () => TextField(
-                      controller: passwordController,
-                      obscureText: loginController.passwordVisible.value,
-                      decoration: InputDecoration(
-                        hintText: "Pin or Password",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        prefixIcon: Icon(Icons.lock),
-                        suffixIcon: GestureDetector(
-                          child: Icon(
-                            loginController.passwordVisible.value
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        loginController.togglePassword();
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
-                GestureDetector(
-                  child: MaterialButton(
-                    onPressed: () {},
-                    color: Colors.white,
-                    textColor: Colors.deepOrangeAccent,
-                    child: Text("Create an account"),
-                  ),
-                ),
+                const SizedBox(height: 40),
 
-                SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Already have an account? ",
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      GestureDetector(
-                        child: Text(
-                          "Login",
-                          style: TextStyle(color: Colors.blue),
-                        ),
-                        onTap: () {
-                          Get.offAndToNamed("/Login");
-                        },
-                      ),
+                // Name Fields (Side by side)
+                Row(
+                  children: [
+                    Expanded(child: _buildTextField(context, "FIRST NAME", "Naila", LucideIcons.user, authController.firstNameController)),
+                    const SizedBox(width: 15),
+                    Expanded(child: _buildTextField(context, "LAST NAME", "Smith", null, authController.lastNameController)),
+                  ],
+                ),
+                const SizedBox(height: 20),
+
+                // Email Field
+                _buildTextField(context, "EMAIL ADDRESS", "naila@example.com", LucideIcons.mail, authController.emailController, isEmail: true),
+                const SizedBox(height: 20),
+
+                // Password Field
+                Text("PASSWORD", style: Theme.of(context).textTheme.labelSmall),
+                const SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppTheme.surfaceContainerLowest,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(color: AppTheme.textMain.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, 4)),
                     ],
                   ),
+                  child: Obx(() => TextField(
+                    controller: authController.passwordController,
+                    obscureText: authController.isPasswordHidden.value,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    decoration: InputDecoration(
+                      hintText: "••••••••",
+                      hintStyle: TextStyle(color: AppTheme.textVariant.withOpacity(0.5)),
+                      prefixIcon: const Icon(LucideIcons.lock, color: AppTheme.textVariant),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          authController.isPasswordHidden.value ? LucideIcons.eyeOff : LucideIcons.eye,
+                          color: AppTheme.textVariant,
+                        ),
+                        onPressed: authController.togglePassword,
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                    ),
+                  )),
+                ),
+                const SizedBox(height: 40),
+
+                // Signup Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 60,
+                  child: Obx(() => ElevatedButton(
+                    onPressed: authController.isLoading.value ? null : () => authController.signup(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.primary,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                      elevation: 10,
+                      shadowColor: AppTheme.primary.withOpacity(0.3),
+                    ),
+                    child: authController.isLoading.value
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : Text("Create Account", style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.white, fontSize: 16)),
+                  )),
+                ),
+                const SizedBox(height: 30),
+
+                // Switch back to Login
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Already a member? ", style: Theme.of(context).textTheme.bodyMedium),
+                    GestureDetector(
+                      onTap: () => Get.back(), // Pops the signup screen to reveal login
+                      child: Text(
+                        "Sign in.",
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppTheme.primary,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  // Helper widget to keep code clean
+  Widget _buildTextField(BuildContext context, String label, String hint, IconData? icon, TextEditingController controller, {bool isEmail = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: Theme.of(context).textTheme.labelSmall),
+        const SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [BoxShadow(color: AppTheme.textMain.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, 4))],
+          ),
+          child: TextField(
+            controller: controller,
+            keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+            style: Theme.of(context).textTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: TextStyle(color: AppTheme.textVariant.withOpacity(0.5)),
+              prefixIcon: icon != null ? Icon(icon, color: AppTheme.textVariant) : null,
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
