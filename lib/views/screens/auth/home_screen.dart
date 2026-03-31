@@ -1,7 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../../../configs/theme.dart';
+import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:intl/intl.dart';
+
+import '../../../configs/theme.dart';
+import '../../../controllers/product_controller.dart';
+import '../../../models/product_model.dart';
+import '../../widgets/cart_pill.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // Restored your categories!
   List categories = [
     "assets/images/coco_vanilla.png",
     "assets/images/bod_oil.png",
@@ -19,6 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final productController = Get.put(ProductController());
+    final currencyFormatter = NumberFormat.currency(
+      symbol: 'Ksh ',
+      decimalDigits: 0,
+    );
+
     return Scaffold(
       backgroundColor: AppTheme.background,
       body: SingleChildScrollView(
@@ -27,23 +40,39 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Hey, Naila", style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 28)),
-                      Text("Good Morning", style: Theme.of(context).textTheme.bodyMedium),
+                      Text(
+                        "Hey, Naila",
+                        style: Theme.of(
+                          context,
+                        ).textTheme.displayLarge?.copyWith(fontSize: 28),
+                      ),
+                      Text(
+                        "Good Morning",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     ],
                   ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.asset("assets/images/ladybug.png", height: 60, width: 60, fit: BoxFit.contain),
+                    child: Image.asset(
+                      "assets/images/ladybug.png",
+                      height: 60,
+                      width: 60,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 30.0),
+
+              // Search Bar
               Container(
                 padding: const EdgeInsets.only(left: 20.0),
                 decoration: BoxDecoration(
@@ -54,17 +83,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: "Search Products",
-                    hintStyle: TextStyle(color: AppTheme.textVariant.withOpacity(0.5)),
-                    prefixIcon: const Icon(LucideIcons.search, color: AppTheme.primary),
+                    hintStyle: TextStyle(
+                      color: AppTheme.textVariant.withOpacity(0.5),
+                    ),
+                    prefixIcon: const Icon(
+                      LucideIcons.search,
+                      color: AppTheme.primary,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 30.0),
+
+              // RESTORED: Categories Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Discover Essentials", style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20)),
-                  Text("See all", style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppTheme.primary)),
+                  Text(
+                    "Discover Essentials",
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(fontSize: 20),
+                  ),
+                  Text(
+                    "See all",
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelSmall?.copyWith(color: AppTheme.primary),
+                  ),
                 ],
               ),
               const SizedBox(height: 20.0),
@@ -79,7 +125,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 80,
                         color: AppTheme.primary,
                         child: const Center(
-                          child: Text("All", style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold)),
+                          child: Text(
+                            "All",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -100,64 +153,143 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 40.0),
+
+              // Signature Selection Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Signature Selection", style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20)),
-                  Text("See all", style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppTheme.primary)),
+                  Text(
+                    "Signature Selection",
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(fontSize: 20),
+                  ),
+                  Text(
+                    "See all",
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelSmall?.copyWith(color: AppTheme.primary),
+                  ),
                 ],
               ),
               const SizedBox(height: 20.0),
-              
-              // We will replace this static list with dynamic API data soon!
+
+              // DYNAMIC PRODUCT LIST FROM PHP DATABASE
               SizedBox(
-                height: 250,
-                child: ListView(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildProductCard(context, "assets/images/shimmer_body_oil.png", "Shimmer Oil", "Ksh 1,200"),
-                    _buildProductCard(context, "assets/images/pineapple_mango.png", "Pineapple Mango", "Ksh 1,255"),
-                    _buildProductCard(context, "assets/images/blue_nila.png", "Blue Nila Scrub", "Ksh 1,200"),
-                  ],
-                ),
+                height: 380,
+                child: Obx(() {
+                  if (productController.isLoading.value) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: AppTheme.primary),
+                    );
+                  }
+
+                  if (productController.productList.isEmpty) {
+                    return const Center(
+                      child: Text("No products found in Sanctuary."),
+                    );
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: productController.productList.length,
+                    itemBuilder: (context, index) {
+                      ProductModel product =
+                          productController.productList[index];
+
+                      return Container(
+                        width: 180,
+                        margin: const EdgeInsets.only(right: 20.0, bottom: 20),
+                        decoration: BoxDecoration(
+                          color: AppTheme.surfaceContainerLowest,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppTheme.textMain.withOpacity(0.05),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                              child: Image.asset(
+                                product.imageUrl,
+                                height: 210,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                // Safe fallback if image is missing
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Container(
+                                      height: 210,
+                                      color: AppTheme.surfaceContainer,
+                                      child: const Icon(
+                                        LucideIcons.imageOff,
+                                        color: AppTheme.textVariant,
+                                      ),
+                                    ),
+                              ),
+                            ),
+
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          product.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge
+                                              ?.copyWith(fontSize: 16),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          currencyFormatter.format(
+                                            product.price,
+                                          ),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall
+                                              ?.copyWith(
+                                                color: AppTheme.primary,
+                                                fontSize: 14,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            MorphingCartPill(product: product),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                }),
               ),
+              const SizedBox(height: 50.0),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildProductCard(BuildContext context, String imagePath, String title, String price) {
-    return Container(
-      width: 160,
-      margin: const EdgeInsets.only(right: 20.0),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: AppTheme.textMain.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-            child: Image.asset(imagePath, height: 150, width: double.infinity, fit: BoxFit.cover),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: Theme.of(context).textTheme.bodyLarge, maxLines: 1, overflow: TextOverflow.ellipsis),
-                const SizedBox(height: 5),
-                Text(price, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppTheme.primary)),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -182,7 +314,12 @@ class CategoryTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
               border: Border.all(color: Colors.white60, width: 1.5),
             ),
-            child: Image.asset(image, fit: BoxFit.cover, width: double.infinity, height: 150),
+            child: Image.asset(
+              image,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 150,
+            ),
           ),
         ),
       ),
