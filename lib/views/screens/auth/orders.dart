@@ -13,7 +13,6 @@ class Orders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Inject the CartController (It remembers the state from the HomeScreen!)
     final cartController = Get.find<CartController>();
     final currencyFormatter = NumberFormat.currency(
       symbol: 'Ksh ',
@@ -24,7 +23,7 @@ class Orders extends StatelessWidget {
       backgroundColor: AppTheme.background,
       appBar: AppBar(
         title: Text(
-          "Your Ritual Selection",
+          "Your Selection",
           style: Theme.of(
             context,
           ).textTheme.displayLarge?.copyWith(fontSize: 28),
@@ -61,10 +60,8 @@ class Orders extends StatelessWidget {
           );
         }
 
-        // CART WITH ITEMS
         return Column(
           children: [
-            // List of Cart Items
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(
@@ -73,7 +70,6 @@ class Orders extends StatelessWidget {
                 ),
                 itemCount: cartController.cartItems.length,
                 itemBuilder: (context, index) {
-                  // Get the current item from the Map
                   final item = cartController.cartItems.values.elementAt(index);
                   final ProductModel product = item.product;
 
@@ -87,7 +83,6 @@ class Orders extends StatelessWidget {
               ),
             ),
 
-            // Checkout Summary Area
             _buildCheckoutSummary(context, cartController, currencyFormatter),
           ],
         );
@@ -95,7 +90,6 @@ class Orders extends StatelessWidget {
     );
   }
 
-  // --- CART ITEM UI ---
   Widget _buildCartItemCard(
     BuildContext context,
     ProductModel product,
@@ -118,17 +112,16 @@ class Orders extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Product Image Thumbnail
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.asset(
               product.imageUrl,
-              height: 80,
-              width: 80,
+              height: 90,
+              width: 90,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
-                height: 80,
-                width: 80,
+                height: 90,
+                width: 90,
                 color: AppTheme.surfaceContainer,
                 child: const Icon(
                   LucideIcons.imageOff,
@@ -139,7 +132,6 @@ class Orders extends StatelessWidget {
           ),
           const SizedBox(width: 15),
 
-          // Product Details
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,7 +164,6 @@ class Orders extends StatelessWidget {
     );
   }
 
-  // --- CHECKOUT SUMMARY UI ---
   Widget _buildCheckoutSummary(
     BuildContext context,
     CartController cart,
@@ -183,111 +174,129 @@ class Orders extends StatelessWidget {
     double total = subtotal + shipping;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30.0),
+      padding: const EdgeInsets.only(
+        left: 25.0,
+        right: 25.0,
+        top: 20.0,
+        bottom: 15.0,
+      ),
       decoration: BoxDecoration(
         color: AppTheme.surfaceContainerLowest,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(40)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.primary.withOpacity(0.1),
-            blurRadius: 30,
+            color: AppTheme.primary.withOpacity(0.08),
+            blurRadius: 20,
             offset: const Offset(0, -5),
           ),
         ],
       ),
-      child: Column(
-        children: [
-          // Subtotal Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Subtotal", style: Theme.of(context).textTheme.bodyMedium),
-              Text(
-                formatter.format(subtotal),
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-
-          // Shipping Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Shipping", style: Theme.of(context).textTheme.bodyMedium),
-              Text(
-                formatter.format(shipping),
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 15.0),
-            child: Divider(color: AppTheme.surfaceContainer, thickness: 1.5),
-          ),
-
-          // Total Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Total",
-                style: Theme.of(
-                  context,
-                ).textTheme.displayMedium?.copyWith(fontSize: 24),
-              ),
-              Text(
-                formatter.format(total),
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontSize: 24,
-                  color: AppTheme.primary,
-                  fontWeight: FontWeight.bold,
+      child: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Subtotal Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Subtotal",
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontSize: 14),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 30),
-
-          // Checkout Button
-          SizedBox(
-            width: double.infinity,
-            height: 60,
-            child: ElevatedButton(
-              onPressed: () {
-                // We will hook this up to the XAMPP database in the next step!
-                Get.snackbar(
-                  "Processing",
-                  "Contacting secure checkout...",
-                  backgroundColor: AppTheme.surfaceContainer,
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                Text(
+                  formatter.format(subtotal),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(fontSize: 14),
                 ),
-                elevation: 10,
-                shadowColor: AppTheme.primary.withOpacity(0.3),
-              ),
-              child: Text(
-                "Complete Purchase",
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
+              ],
             ),
-          ),
-          const SizedBox(height: 15),
-          Text(
-            "SECURE ENCRYPTED CHECKOUT SESSION",
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              fontSize: 10,
-              color: AppTheme.textVariant.withOpacity(0.5),
+            const SizedBox(height: 8),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Shipping",
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontSize: 14),
+                ),
+                Text(
+                  formatter.format(shipping),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(fontSize: 14),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 60), // Space for the CurvedNavBar
-        ],
+
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12.0),
+              child: Divider(color: AppTheme.surfaceContainer, thickness: 1),
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Total",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(fontSize: 12),
+                    ),
+                    Text(
+                      formatter.format(total),
+                      style: Theme.of(context).textTheme.displayMedium
+                          ?.copyWith(
+                            fontSize: 22,
+                            color: AppTheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
+
+                // Checkout Button
+                SizedBox(
+                  width: 180,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Get.snackbar(
+                        "Processing",
+                        "Contacting secure checkout...",
+                        backgroundColor: AppTheme.surfaceContainer,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      elevation: 5,
+                      shadowColor: AppTheme.primary.withOpacity(0.3),
+                    ),
+                    child: Text(
+                      "Checkout",
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 80),
+          ],
+        ),
       ),
     );
   }
