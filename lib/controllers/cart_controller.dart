@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:feb25prac/services/api_service.dart';
 import 'package:get/get.dart';
 import '../models/product_model.dart';
 
@@ -8,10 +11,10 @@ class CartItem {
 }
 
 class CartController extends GetxController {
-  // A map where the Key is the Product ID, and the Value is the CartItem
+  
   var cartItems = <int, CartItem>{}.obs;
 
-  // Get current quantity of a specific product
+ 
   int getQuantity(int productId) {
     if (cartItems.containsKey(productId)) {
       return cartItems[productId]!.quantity;
@@ -19,29 +22,29 @@ class CartController extends GetxController {
     return 0;
   }
 
-  // Add one to cart
+  
   void addProduct(ProductModel product) {
     if (cartItems.containsKey(product.id)) {
       cartItems[product.id]!.quantity += 1;
     } else {
       cartItems[product.id] = CartItem(product: product);
     }
-    cartItems.refresh(); // Tells GetX to redraw the UI
+    cartItems.refresh(); 
   }
 
-  // Remove one from cart
+ 
   void removeProduct(ProductModel product) {
     if (cartItems.containsKey(product.id)) {
       if (cartItems[product.id]!.quantity > 1) {
         cartItems[product.id]!.quantity -= 1;
       } else {
-        cartItems.remove(product.id); // If it hits 0, delete it
+        cartItems.remove(product.id); 
       }
       cartItems.refresh();
     }
   }
 
-  // Calculate Subtotal (We will use this on the Checkout screen later)
+  
   double get subtotal {
     double total = 0.0;
     cartItems.forEach((key, item) {
@@ -49,4 +52,47 @@ class CartController extends GetxController {
     });
     return total;
   }
+
+  
+  Future<void> checkout(double totalAmount) async {
+    if (cartItems.isEmpty) {
+      Get.snackbar('Empty Cart', 'Please add items to your sanctuary first.');
+      return;
+    }
+
+    try {
+     
+      List<Map<String, dynamic>> orderItems = cartItems.values.map((item) {
+        return {
+          'product_id': item.product.id,
+          'quantity': item.quantity,
+          'price': item.product.price, 
+        };
+      }).toList();
+
+      
+      final response = await ApiService().post('checkout.php', {
+        'total_amount': totalAmount,
+        'items': orderItems,
+      });
+
+      
+      if (response.data['success'] == true) {
+        
+        cartItems.clear();
+        Get.snackbar(
+          'Order Successful',
+          response.data['message'],
+          duration: const Duration(seconds: 5),
+          backgroundColor: const Color(0xFFFEEAE3), 
+        );
+      } else {
+        Get.snackbar('Checkout Failed', response.data['message']);
+      }
+    } catch (e) {
+      print("Checkout Error: $e");
+      Get.snackbar('Error', 'Could not complete checkout. Please try again.');
+    }
+  }
+  
 }

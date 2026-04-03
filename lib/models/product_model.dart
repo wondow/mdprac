@@ -29,7 +29,7 @@ class ProductModel {
       name: json['name'] ?? '',
       price: double.parse(
         json['price'].toString(),
-      ), // Always ensure decimals are parsed correctly
+      ), 
       description: json['description'] ?? '',
       imageUrl: json['image_url'] ?? '',
       stockQuantity: json['stock_quantity'] is int

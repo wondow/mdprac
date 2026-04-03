@@ -9,8 +9,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Inject the controller once
-    final authController = Get.put(AuthController());
+    final authController = Get.find<AuthController>();
 
     return Scaffold(
       backgroundColor: AppTheme.background,
@@ -22,7 +21,6 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header
                 Text(
                   "Welcome Back.",
                   style: Theme.of(
@@ -39,7 +37,6 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 50),
 
-                // Email Field
                 Text(
                   "EMAIL ADDRESS",
                   style: Theme.of(context).textTheme.labelSmall,
@@ -77,7 +74,6 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
 
-                // Password Field
                 Text("PASSWORD", style: Theme.of(context).textTheme.labelSmall),
                 const SizedBox(height: 10),
                 Container(
@@ -125,7 +121,6 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
 
-                // Login Button
                 SizedBox(
                   width: double.infinity,
                   height: 60,
@@ -154,7 +149,6 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                // Switch to Signup
                 Container(
                   decoration: BoxDecoration(),
                   child: Row(
@@ -167,11 +161,12 @@ class LoginScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () => Get.toNamed("/signup"),
                         child: Text(
-                          "Create an account.",
+                          "Sign up.",
                           style: Theme.of(context).textTheme.bodyLarge
                               ?.copyWith(
                                 color: AppTheme.primary,
-                                decoration: TextDecoration.underline,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.bold,
                               ),
                         ),
                       ),

@@ -7,7 +7,7 @@ error_reporting(0); // Hide HTML errors, so they don't break JSON
 
 $host = '127.0.0.1';
 $db = 'blush';
-$user = 'root'; 
+$user = 'root';
 $pass = '';     
 
 try {

@@ -106,12 +106,23 @@ class AuthController extends GetxController {
       print("PHP Response: ${response.data}"); // <-- ADDED THIS FOR DEBUGGING
 
       if (response.data['success'] == true) {
-        Get.snackbar(
-          'Success',
-          'Account created! Please login.',
-          backgroundColor: Colors.green[100],
-        );
-        Get.offNamed('/login');
+        // 1. Get the token from PHP
+        String token = response.data['token'];
+
+        // 2. AWAIT the secure save (This is critical!)
+        await _storage.write(key: 'token', value: token);
+
+        // 3. Verify it saved just for our sanity
+        String? savedToken = await _storage.read(key: 'token');
+        print("VERIFIED SAVED TOKEN: $savedToken");
+
+        currentUser = UserModel.fromJson(response.data['user'], token);
+
+        emailController.clear();
+        passwordController.clear();
+
+        // 4. Now navigate
+        Get.offAllNamed('/dashboard');
       } else {
         Get.snackbar(
           'Signup Failed',
@@ -129,6 +140,13 @@ class AuthController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  // Secure Logout
+  Future<void> logout() async {
+    await _storage.delete(key: 'token'); // Delete the token from the phone
+    currentUser = null; // Wipe user data
+    Get.offAllNamed('/login'); // Send them to the login screen
   }
 
   @override

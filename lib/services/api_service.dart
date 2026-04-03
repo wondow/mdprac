@@ -1,17 +1,30 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiService {
   final Dio _dio = Dio();
+  final _storage = const FlutterSecureStorage();
 
-  // NOTE: If using an Android Emulator, use 10.0.2.2.
-  // If using a physical phone, use your computer's IPv4 address (e.g., 192.168.1.X)
-  // If building for Windows Desktop, use 127.0.0.1
-  static const String baseUrl = 'http://192.168.100.4/blush/api/';
+  // Use your current working IP address here!
+  static const String baseUrl = 'http://192.168.100.140/blush/api/';
 
   ApiService() {
     _dio.options.baseUrl = baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 10);
     _dio.options.receiveTimeout = const Duration(seconds: 10);
+
+    // This Interceptor automatically adds the Token to the header of every request
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          String? token = await _storage.read(key: 'token');
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+      ),
+    );
   }
 
   Future<Response> post(String endpoint, Map<String, dynamic> data) async {

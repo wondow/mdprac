@@ -25,7 +25,7 @@ class ProductController extends GetxController {
       final response = await _api.get('products.php?action=get_all');
 
       if (response.data['success'] == true) {
-        // Clear existing lists before adding new data
+
         productList.clear();
         bodyButters.clear();
         bodyScrubs.clear();
@@ -36,7 +36,6 @@ class ProductController extends GetxController {
           ProductModel product = ProductModel.fromJson(item);
           productList.add(product);
 
-          // Sort into categories for easy UI rendering later
           if (product.categoryName == 'Butters') bodyButters.add(product);
           if (product.categoryName == 'Scrubs') bodyScrubs.add(product);
           if (product.categoryName == 'Oils') bodyOils.add(product);

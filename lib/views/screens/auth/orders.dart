@@ -47,7 +47,7 @@ class Orders extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  "Your sanctuary is empty.",
+                  "Your basket is empty.",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 10),
@@ -269,11 +269,7 @@ class Orders extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.snackbar(
-                        "Processing",
-                        "Contacting secure checkout...",
-                        backgroundColor: AppTheme.surfaceContainer,
-                      );
+                      cart.checkout(total);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primary,

@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Restored your categories!
   List categories = [
     "assets/images/coco_vanilla.png",
     "assets/images/bod_oil.png",
@@ -40,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -72,7 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 30.0),
 
-              // Search Bar
               Container(
                 padding: const EdgeInsets.only(left: 20.0),
                 decoration: BoxDecoration(
@@ -95,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 30.0),
 
-              // RESTORED: Categories Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -155,7 +151,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 40.0),
 
-              // Signature Selection Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -175,7 +170,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 20.0),
 
-              // DYNAMIC PRODUCT LIST FROM PHP DATABASE
               SizedBox(
                 height: 380,
                 child: Obx(() {
@@ -225,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 210,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
-                                // Safe fallback if image is missing
+
                                 errorBuilder: (context, error, stackTrace) =>
                                     Container(
                                       height: 210,
