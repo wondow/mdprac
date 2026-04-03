@@ -32,6 +32,15 @@ class CartScreen extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
         centerTitle: false,
+        actions: [
+          IconButton(
+            icon: const Icon(LucideIcons.history, color: AppTheme.primary),
+            tooltip: 'Order History',
+
+            onPressed: () => Get.toNamed('/orders'),
+          ),
+          SizedBox(width: 10),
+        ],
       ),
       body: Obx(() {
         if (cartController.cartItems.isEmpty) {

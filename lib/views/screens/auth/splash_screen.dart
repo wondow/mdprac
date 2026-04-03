@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              "Wrap your skin in more",
+              "Wrap your skin in care",
               style: Theme.of(
                 context,
               ).textTheme.labelSmall?.copyWith(letterSpacing: 2.0),

@@ -24,19 +24,27 @@ class AuthController extends GetxController {
 
   // Check if user is already logged in when app starts
   // Check if user is already logged in when app starts
+  // Check login status AND fetch user data
   Future<void> checkLoginStatus() async {
-    // Add a 2-second delay so the user can actually see your beautiful splash screen branding!
     await Future.delayed(const Duration(seconds: 2));
 
     String? token = await _storage.read(key: 'token');
     if (token != null) {
-      Get.offAllNamed('/dashboard');
-    } else {
-      Get.offAllNamed('/login');
+      try {
+        final response = await _api.get('user.php');
+        if (response.data['success'] == true) {
+          currentUser = UserModel.fromJson(response.data['user'], token);
+          Get.offAllNamed('/dashboard');
+          return;
+        }
+      } catch (e) {
+        print("Failed to fetch user: $e");
+      }
     }
+    // If no token or fetch failed, go to login
+    Get.offAllNamed('/login');
   }
 
-  // Handle Login
   // Handle Login
   Future<void> login() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
