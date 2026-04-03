@@ -2,9 +2,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import '../../../configs/theme.dart';
 import 'home_screen.dart';
-import 'orders.dart';
-import 'proflie.dart';
 
+import 'cart.dart';
+import 'proflie.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -20,7 +20,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    _pages = [const HomeScreen(), const Orders(), const ProfilePage()];
+    _pages = [const HomeScreen(), const CartScreen(), const ProfilePage()];
   }
 
   @override
@@ -36,7 +36,7 @@ class _DashboardState extends State<Dashboard> {
         animationDuration: const Duration(milliseconds: 300),
         items: const [
           Icon(Icons.home, size: 30, color: Colors.white),
-          Icon(Icons.list, size: 30, color: Colors.white),
+          Icon(Icons.shopping_cart, size: 30, color: Colors.white),
           Icon(Icons.person, size: 30, color: Colors.white),
         ],
         onTap: (index) {
