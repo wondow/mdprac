@@ -90,75 +90,71 @@ class Orders extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItemCard(
-    BuildContext context,
-    ProductModel product,
-    int quantity,
-    NumberFormat formatter,
-  ) {
+// --- REFINED CART ITEM UI ---
+  Widget _buildCartItemCard(BuildContext context, ProductModel product, int quantity, NumberFormat formatter) {
+    final cartController = Get.find<CartController>();
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 20.0),
-      padding: const EdgeInsets.all(15.0),
+      margin: const EdgeInsets.only(bottom: 15.0),
+      padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         color: AppTheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.textMain.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
+        boxShadow:[
+          BoxShadow(color: AppTheme.textMain.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 4)),
         ],
       ),
       child: Row(
-        children: [
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children:[
+          // Product Image Thumbnail
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(15),
             child: Image.asset(
               product.imageUrl,
-              height: 90,
-              width: 90,
+              height: 85,
+              width: 85,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
-                height: 90,
-                width: 90,
-                color: AppTheme.surfaceContainer,
-                child: const Icon(
-                  LucideIcons.imageOff,
-                  color: AppTheme.textVariant,
-                ),
+                height: 85, width: 85, color: AppTheme.surfaceContainer,
+                child: const Icon(LucideIcons.imageOff, color: AppTheme.textVariant),
               ),
             ),
           ),
           const SizedBox(width: 15),
 
+          // Product Details & Morphing Pill
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children:[
                 Text(
                   product.name,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyLarge?.copyWith(fontSize: 16),
+                  style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 16),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 4),
                 Text(
                   formatter.format(product.price),
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppTheme.primary,
-                    fontSize: 14,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 14),
                 ),
+                const SizedBox(height: 10),
+                // The Morphing Pill
+                MorphingCartPill(product: product),
               ],
             ),
           ),
 
-          // Morphing Pill Controller
-          const SizedBox(width: 10),
-          MorphingCartPill(product: product),
+          // Dedicated Trash Icon
+          IconButton(
+            onPressed: () {
+              // Instantly remove the entire item from the cart
+              cartController.cartItems.remove(product.id);
+            },
+            icon: const Icon(LucideIcons.trash2, color: Colors.redAccent, size: 20),
+            splashRadius: 20,
+          ),
         ],
       ),
     );

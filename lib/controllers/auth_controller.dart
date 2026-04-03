@@ -23,10 +23,16 @@ class AuthController extends GetxController {
   void togglePassword() => isPasswordHidden.value = !isPasswordHidden.value;
 
   // Check if user is already logged in when app starts
+  // Check if user is already logged in when app starts
   Future<void> checkLoginStatus() async {
+    // Add a 2-second delay so the user can actually see your beautiful splash screen branding!
+    await Future.delayed(const Duration(seconds: 2));
+
     String? token = await _storage.read(key: 'token');
     if (token != null) {
       Get.offAllNamed('/dashboard');
+    } else {
+      Get.offAllNamed('/login');
     }
   }
 
@@ -69,7 +75,7 @@ class AuthController extends GetxController {
         );
       }
     } catch (e) {
-      print("Dio Error: $e"); // <-- ADDED THIS TO SEE THE EXACT ERROR
+      print("Dio Error: $e");
       Get.snackbar(
         'Error',
         'Could not connect to server',
