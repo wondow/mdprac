@@ -12,7 +12,8 @@ class AuthController extends GetxController {
 
   var isLoading = false.obs;
   var isPasswordHidden = true.obs;
-  UserModel? currentUser;
+  var currentUser =
+      Rxn<UserModel>(); // This makes it an observable that allows nulls!
 
   // Form Controllers
   final emailController = TextEditingController();
@@ -33,7 +34,7 @@ class AuthController extends GetxController {
       try {
         final response = await _api.get('user.php');
         if (response.data['success'] == true) {
-          currentUser = UserModel.fromJson(response.data['user'], token);
+          currentUser.value = UserModel.fromJson(response.data['user'], token);
           Get.offAllNamed('/dashboard');
           return;
         }
@@ -66,7 +67,7 @@ class AuthController extends GetxController {
       print("PHP Response: ${response.data}"); // <-- ADDED THIS FOR DEBUGGING
 
       if (response.data['success'] == true) {
-        currentUser = UserModel.fromJson(
+        currentUser.value = UserModel.fromJson(
           response.data['user'],
           response.data['token'],
         );
@@ -130,7 +131,7 @@ class AuthController extends GetxController {
         String? savedToken = await _storage.read(key: 'token');
         print("VERIFIED SAVED TOKEN: $savedToken");
 
-        currentUser = UserModel.fromJson(response.data['user'], token);
+        currentUser.value = UserModel.fromJson(response.data['user'], token);
 
         emailController.clear();
         passwordController.clear();
@@ -159,7 +160,7 @@ class AuthController extends GetxController {
   // Secure Logout
   Future<void> logout() async {
     await _storage.delete(key: 'token'); // Delete the token from the phone
-    currentUser = null; // Wipe user data
+    currentUser.value = null; // Wipe user data
     Get.offAllNamed('/login'); // Send them to the login screen
   }
 

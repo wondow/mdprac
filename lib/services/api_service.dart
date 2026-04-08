@@ -6,7 +6,7 @@ class ApiService {
   final _storage = const FlutterSecureStorage();
 
   // Use your current working IP address here!
-  static const String baseUrl = 'http://192.168.100.140/blush/api/';
+  static const String baseUrl = 'http://192.168.100.4/blush/api/';
 
   ApiService() {
     _dio.options.baseUrl = baseUrl;
