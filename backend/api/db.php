@@ -3,7 +3,8 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
-error_reporting(0); // Hide HTML errors, so they don't break JSON
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 $host = '127.0.0.1';
 $db = 'blush';

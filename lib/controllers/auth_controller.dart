@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart'; // Make sure Dio is imported for the error catcher!
 import '../services/api_service.dart';
 import '../models/user_model.dart';
-import '../configs/routes.dart'; // We will fix routes next!
 
 class AuthController extends GetxController {
   final ApiService _api = ApiService();
@@ -12,10 +11,8 @@ class AuthController extends GetxController {
 
   var isLoading = false.obs;
   var isPasswordHidden = true.obs;
-  var currentUser =
-      Rxn<UserModel>(); // This makes it an observable that allows nulls!
+  var currentUser = Rxn<UserModel>();
 
-  // Form Controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final firstNameController = TextEditingController();
@@ -23,9 +20,7 @@ class AuthController extends GetxController {
 
   void togglePassword() => isPasswordHidden.value = !isPasswordHidden.value;
 
-  // Check if user is already logged in when app starts
-  // Check if user is already logged in when app starts
-  // Check login status AND fetch user data
+  // --- STARTUP CHECK ---
   Future<void> checkLoginStatus() async {
     await Future.delayed(const Duration(seconds: 2));
 
@@ -33,7 +28,7 @@ class AuthController extends GetxController {
     if (token != null) {
       try {
         final response = await _api.get('user.php');
-        if (response.data['success'] == true) {
+        if (response.data != null && response.data['success'] == true) {
           currentUser.value = UserModel.fromJson(response.data['user'], token);
           Get.offAllNamed('/dashboard');
           return;
@@ -42,11 +37,11 @@ class AuthController extends GetxController {
         print("Failed to fetch user: $e");
       }
     }
-    // If no token or fetch failed, go to login
+
     Get.offAllNamed('/login');
   }
 
-  // Handle Login
+  // --- LOGIN ---
   Future<void> login() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       Get.snackbar(
@@ -64,18 +59,26 @@ class AuthController extends GetxController {
         'password': passwordController.text,
       });
 
-      print("PHP Response: ${response.data}"); // <-- ADDED THIS FOR DEBUGGING
-
-      if (response.data['success'] == true) {
-        currentUser.value = UserModel.fromJson(
-          response.data['user'],
-          response.data['token'],
+      // 1. Check if the response is valid JSON
+      if (response.data == null || response.data is String) {
+        print("RAW PHP OUTPUT: ${response.data}");
+        Get.snackbar(
+          'Server Error',
+          'PHP printed a raw error. Check debug console.',
+          backgroundColor: Colors.red[100],
         );
-        await _storage.write(key: 'token', value: response.data['token']);
+        return;
+      }
 
-        Get.offAllNamed('/dashboard');
+      // 2. Process valid response
+      if (response.data['success'] == true) {
+        String token = response.data['token'];
+        await _storage.write(key: 'token', value: token);
+        currentUser.value = UserModel.fromJson(response.data['user'], token);
+
         emailController.clear();
         passwordController.clear();
+        Get.offAllNamed('/dashboard');
       } else {
         Get.snackbar(
           'Login Failed',
@@ -83,11 +86,14 @@ class AuthController extends GetxController {
           backgroundColor: Colors.red[100],
         );
       }
-    } catch (e) {
-      print("Dio Error: $e");
+    } on DioException catch (e) {
+      // 3. CATCH THE FORMAT EXCEPTION AND PRINT THE RAW HTML ERROR
+      print("--- DIO ERROR ---");
+      print(e.message);
+      print("RAW SERVER RESPONSE: ${e.response?.data}");
       Get.snackbar(
-        'Error',
-        'Could not connect to server',
+        'Network Error',
+        'Check debug console for PHP error.',
         backgroundColor: Colors.red[100],
       );
     } finally {
@@ -95,7 +101,7 @@ class AuthController extends GetxController {
     }
   }
 
-  // Handle Signup
+  // --- SIGNUP ---
   Future<void> signup() async {
     if (firstNameController.text.isEmpty ||
         lastNameController.text.isEmpty ||
@@ -118,26 +124,25 @@ class AuthController extends GetxController {
         'password': passwordController.text,
       });
 
-      print("PHP Response: ${response.data}"); // <-- ADDED THIS FOR DEBUGGING
+      // 1. Check if response is valid JSON
+      if (response.data == null || response.data is String) {
+        print("RAW PHP OUTPUT: ${response.data}");
+        Get.snackbar(
+          'Server Error',
+          'PHP printed a raw error. Check debug console.',
+          backgroundColor: Colors.red[100],
+        );
+        return;
+      }
 
+      // 2. Process valid response (Signup does NOT return a token, it just routes to login!)
       if (response.data['success'] == true) {
-        // 1. Get the token from PHP
-        String token = response.data['token'];
-
-        // 2. AWAIT the secure save (This is critical!)
-        await _storage.write(key: 'token', value: token);
-
-        // 3. Verify it saved just for our sanity
-        String? savedToken = await _storage.read(key: 'token');
-        print("VERIFIED SAVED TOKEN: $savedToken");
-
-        currentUser.value = UserModel.fromJson(response.data['user'], token);
-
-        emailController.clear();
-        passwordController.clear();
-
-        // 4. Now navigate
-        Get.offAllNamed('/dashboard');
+        Get.snackbar(
+          'Success',
+          'Account created! Please login.',
+          backgroundColor: Colors.green[100],
+        );
+        Get.offNamed('/login');
       } else {
         Get.snackbar(
           'Signup Failed',
@@ -145,11 +150,14 @@ class AuthController extends GetxController {
           backgroundColor: Colors.red[100],
         );
       }
-    } catch (e) {
-      print("Dio Error: $e"); // <-- ADDED THIS TO SEE THE EXACT ERROR
+    } on DioException catch (e) {
+      // 3. CATCH THE FORMAT EXCEPTION AND PRINT
+      print("--- DIO ERROR ---");
+      print(e.message);
+      print("RAW SERVER RESPONSE: ${e.response?.data}");
       Get.snackbar(
-        'Error',
-        'Could not connect to server',
+        'Network Error',
+        'Check debug console for PHP error.',
         backgroundColor: Colors.red[100],
       );
     } finally {
@@ -157,11 +165,11 @@ class AuthController extends GetxController {
     }
   }
 
-  // Secure Logout
+  // --- LOGOUT ---
   Future<void> logout() async {
-    await _storage.delete(key: 'token'); // Delete the token from the phone
-    currentUser.value = null; // Wipe user data
-    Get.offAllNamed('/login'); // Send them to the login screen
+    await _storage.delete(key: 'token');
+    currentUser.value = null;
+    Get.offAllNamed('/login');
   }
 
   @override

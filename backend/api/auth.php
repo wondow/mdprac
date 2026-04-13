@@ -35,6 +35,6 @@ elseif ($action === 'login') {
             "user" => ["id" => $user['id'], "name" => $user['firstname'], "email" => $user['email']]
         ]);
     } else {
-        echo json_encode(["success" => false, "message" => "Invalid credentials"]);
-    }
+echo json_encode(["success" => false, "message" => "Invalid API action: " . $action]);    }
 }
+

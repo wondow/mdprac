@@ -7,8 +7,8 @@ class ProductController extends GetxController {
 
   var isLoading = true.obs;
   var productList = <ProductModel>[].obs;
+  var filteredProducts = <ProductModel>[].obs;
 
-  // We can use these lists later to filter the UI
   var bodyButters = <ProductModel>[].obs;
   var bodyScrubs = <ProductModel>[].obs;
   var bodyOils = <ProductModel>[].obs;
@@ -25,7 +25,6 @@ class ProductController extends GetxController {
       final response = await _api.get('products.php?action=get_all');
 
       if (response.data['success'] == true) {
-
         productList.clear();
         bodyButters.clear();
         bodyScrubs.clear();
@@ -46,6 +45,23 @@ class ProductController extends GetxController {
       Get.snackbar('Error', 'Failed to load products');
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  void searchProducts(String query) {
+    if (query.isEmpty) {
+      // If the search bar is empty, show all products again
+      filteredProducts.assignAll(productList);
+    } else {
+      // Filter the master list where the product name contains the typed letters (ignoring uppercase/lowercase)
+      filteredProducts.assignAll(
+        productList
+            .where(
+              (product) =>
+                  product.name.toLowerCase().contains(query.toLowerCase()),
+            )
+            .toList(),
+      );
     }
   }
 }

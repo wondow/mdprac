@@ -77,6 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TextField(
+                  onChanged: (value) => productController.searchProducts(value),
+
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: "Search Products",
@@ -180,15 +182,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
 
                   if (productController.productList.isEmpty) {
-                    return const Center(
-                      child: Text("No products found in Sanctuary."),
+                    return Center(
+                      child: Text(
+                        "No products found in Sanctuary.",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     );
                   }
 
                   return ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: productController.productList.length,
+                    itemCount: productController.filteredProducts.length,
                     itemBuilder: (context, index) {
                       ProductModel product =
                           productController.productList[index];

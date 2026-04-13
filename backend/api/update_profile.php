@@ -28,7 +28,7 @@ $firstname = $data['firstname'];
 $lastname = $data['lastname'];
 $phone = $data['phone'];
 $street_address = $data['address'];
-$city = $data['city'] ?? 'Nairobi'; // Defaulting to Nairobi if not provided
+$city = $data['city'] ?? 'Nairobi'; 
 
 try {
     $pdo->beginTransaction();
